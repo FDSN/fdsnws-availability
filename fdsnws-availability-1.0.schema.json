@@ -1,0 +1,115 @@
+{
+    "$id": "http://www.fdsn.org/schema/availability/1",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "fdsn-date-time": {
+            "description": "Date and time with UTC 'Z' designator. Example: 2019-02-13T11:48:15Z, 2019-02-13T11:48:15.123456789Z",
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}[:][0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z$"
+        },
+        "datasource": {
+            "type": "object",
+            "properties": {
+                "network": {
+                    "description": "FDSN network identifier. Example: IU",
+                    "type": "string"
+                },
+                "station": {
+                    "description": "FDSN station identifier. Example: ANMO",
+                    "type": "string"
+                },
+                "location": {
+                    "description": "FDSN location identifier. Example: 00",
+                    "type": "string"
+                },
+                "channel": {
+                    "description": "FDSN channel identifier. Example: BHZ",
+                    "type": "string"
+                },
+                "quality": {
+                    "description": "FDSN quality identifier. Example: M",
+                    "type": "string"
+                },
+                "samplerate": {
+                    "description": "Sample rate in Hertz. example 50.0",
+                    "type": "number"
+                },
+                "timespans": {
+                    "description": "Array of array of fdsn-date-time pairs. Returned from '/timespan' queries only.",
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/fdsn-date-time"
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    }
+                },
+                "earliest": {
+                    "description": "Earliest time of data availability. Returned from '/extent' queries only.",
+                    "$ref": "#/definitions/fdsn-date-time"
+                },
+                "latest": {
+                    "description": "Lastest time of data availability. Returned from '/extent' queries only.",
+                    "$ref": "#/definitions/fdsn-date-time"
+                },
+                "updated": {
+                    "description": "The most recent data update-date for the datasource and time range contraints in query",
+                    "$ref": "#/definitions/fdsn-date-time"
+                },
+                "timespanCount": {
+                    "description": "The number of timespans. Returned from '/extent' queries only.",
+                    "type": "integer"
+                },
+                "restriction": {
+                    "description": "The data access restriction status as it applies to the client. OPEN: the data is availabile. RESTRICTED: data is not available to client, but is in the archive. PARTIAL: some of the data is available to the client. Returned from '/extent' queries only.",
+                    "type": "string",
+                    "pattern": "^(OPEN|RESTRICTED|PARTIAL)$"
+                }
+            },
+            "required": [
+                "network",
+                "station",
+                "location",
+                "channel"
+            ],
+            "oneOf": [
+                {
+                    "required": [
+                        "timespans"
+                    ]
+                },
+                {
+                    "required": [
+                        "earliest",
+                        "latest"
+                    ]
+                }
+            ]
+        }
+    },
+    "title": "FDSN data availability message format JSON schema",
+    "description": "FDSN data center time series data availability JSON schema",
+    "type": "object",
+    "properties": {
+        "created": {
+            "description": "Date and time of the availability query",
+            "$ref": "#/definitions/fdsn-date-time"
+        },
+        "version": {
+            "description": "Data availability message format version",
+            "const": 1.0
+        },
+        "datasources": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/datasource"
+            }
+        }
+    },
+    "required": [
+        "version",
+        "datasources"
+    ]
+}
