@@ -35,7 +35,7 @@
                     "type": "number"
                 },
                 "timespans": {
-                    "description": "Array of array of fdsn-date-time pairs. Returned from '/timespan' queries only.",
+                    "description": "Array of array of fdsn-date-time pairs. Returned from '/query' queries only.",
                     "type": "array",
                     "items": {
                         "type": "array",
