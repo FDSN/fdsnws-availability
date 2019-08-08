@@ -1,4 +1,5 @@
-The **fdsnws-availability** web service is defined by the
+The [**fdsnws-availability**](https://www.fdsn.org/webservices/)
+web service is defined by the
 [International Federation of Digital Seismograph Networks (FDSN)](https://www.fdsn.org/).
 
 The service specification is published at:
